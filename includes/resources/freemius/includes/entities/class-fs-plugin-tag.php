@@ -26,6 +26,10 @@
         /**
          * @var string
          */
+        public $requires_programming_language_version;
+        /**
+         * @var string
+         */
         public $tested_up_to_version;
         /**
          * @var bool
@@ -36,9 +40,13 @@
          */
         public $has_premium;
         /**
-         * @var bool
+         * @var string One of the following: `pending`, `beta`, `unreleased`.
          */
-        public $is_released;
+        public $release_mode;
+        /**
+         * @var string
+         */
+        public $upgrade_notice;
 
 		function __construct( $tag = false ) {
 			parent::__construct( $tag );
@@ -47,4 +55,14 @@
 		static function get_type() {
 			return 'tag';
 		}
+
+        /**
+         * @author Leo Fajardo (@leorw)
+         * @since 2.3.0
+         *
+         * @return bool
+         */
+		function is_beta() {
+		    return ( 'beta' === $this->release_mode );
+        }
 	}

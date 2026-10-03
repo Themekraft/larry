@@ -18,20 +18,14 @@
 
 	$slug = $fs->get_slug();
 
-	$payments = $fs->_fetch_payments();
+	$edit_text   = fs_text_x_inline( 'Edit', 'verb', 'edit', $slug );
+	$update_text = fs_text_x_inline( 'Update', 'verb', 'update', $slug );
 
-	$show_billing = ( is_array( $payments ) && 0 < count( $payments ) );
-
-	if ( $show_billing ) :
-
-		$edit_text   = fs_text_x_inline( 'Edit', 'verb', 'edit', $slug );
-		$update_text = fs_text_x_inline( 'Update', 'verb', 'update', $slug );
-
-		$billing     = $fs->_fetch_billing();
-		$has_billing = ( $billing instanceof FS_Billing );
-		if ( ! $has_billing ) {
-			$billing = new FS_Billing();
-		}
+	$billing     = $fs->_fetch_billing();
+	$has_billing = ( $billing instanceof FS_Billing );
+	if ( ! $has_billing ) {
+		$billing = new FS_Billing();
+	}
 ?>
 <!-- Billing -->
 <div class="postbox">
@@ -41,16 +35,16 @@
 			echo ' class="fs-read-mode"';
 		} ?>>
 			<tr>
-				<td><label><span><?php fs_esc_html_echo_inline( 'Business name', 'business-name', $slug ) ?>:</span> <input id="business_name" value="<?php echo $billing->business_name ?>" placeholder="<?php fs_esc_attr_echo_inline( 'Business name', 'business-name', $slug ) ?>"></label></td>
-				<td><label><span><?php fs_esc_html_echo_inline( 'Tax / VAT ID', 'tax-vat-id', $slug ) ?>:</span> <input id="tax_id" value="<?php echo $billing->tax_id ?>" placeholder="<?php fs_esc_attr_echo_inline( 'Tax / VAT ID', 'tax-vat-id', $slug ) ?>"></label></td>
+				<td><label><span><?php fs_esc_html_echo_inline( 'Business name', 'business-name', $slug ) ?>:</span> <input id="business_name" value="<?php echo esc_attr( $billing->business_name ) ?>" placeholder="<?php fs_esc_attr_echo_inline( 'Business name', 'business-name', $slug ) ?>"></label></td>
+				<td><label><span><?php fs_esc_html_echo_inline( 'Tax / VAT ID', 'tax-vat-id', $slug ) ?>:</span> <input id="tax_id" value="<?php echo esc_attr( $billing->tax_id ) ?>" placeholder="<?php fs_esc_attr_echo_inline( 'Tax / VAT ID', 'tax-vat-id', $slug ) ?>"></label></td>
 			</tr>
 			<tr>
-				<td><label><span><?php printf( fs_esc_html_inline( 'Address Line %d', 'address-line-n', $slug ), 1 ) ?>:</span> <input id="address_street" value="<?php echo $billing->address_street ?>" placeholder="<?php printf( fs_esc_attr_inline( 'Address Line %d', 'address-line-n', $slug ), 1 ) ?>"></label></td>
-				<td><label><span><?php printf( fs_esc_html_inline( 'Address Line %d', 'address-line-n', $slug ), 2 ) ?>:</span> <input id="address_apt" value="<?php echo $billing->address_apt ?>" placeholder="<?php printf( fs_esc_attr_inline( 'Address Line %d', 'address-line-n', $slug ), 2 ) ?>"></label></td>
+				<td><label><span><?php printf( fs_esc_html_inline( 'Address Line %d', 'address-line-n', $slug ), 1 ) ?>:</span> <input id="address_street" value="<?php echo esc_attr( $billing->address_street ) ?>" placeholder="<?php printf( fs_esc_attr_inline( 'Address Line %d', 'address-line-n', $slug ), 1 ) ?>"></label></td>
+				<td><label><span><?php printf( fs_esc_html_inline( 'Address Line %d', 'address-line-n', $slug ), 2 ) ?>:</span> <input id="address_apt" value="<?php echo esc_attr( $billing->address_apt ) ?>" placeholder="<?php printf( fs_esc_attr_inline( 'Address Line %d', 'address-line-n', $slug ), 2 ) ?>"></label></td>
 			</tr>
 			<tr>
-				<td><label><span><?php fs_esc_html_echo_inline( 'City', 'city', $slug ) ?> / <?php fs_esc_html_echo_inline( 'Town', 'town', $slug ) ?>:</span> <input id="address_city" value="<?php echo $billing->address_city ?>" placeholder="<?php fs_esc_attr_echo_inline( 'City', 'city', $slug ) ?> / <?php fs_esc_attr_echo_inline( 'Town', 'town', $slug ) ?>"></label></td>
-				<td><label><span><?php fs_esc_html_echo_inline( 'ZIP / Postal Code', 'zip-postal-code', $slug ) ?>:</span> <input id="address_zip" value="<?php echo $billing->address_zip ?>" placeholder="<?php fs_esc_attr_echo_inline( 'ZIP / Postal Code', 'zip-postal-code', $slug ) ?>"></label></td>
+				<td><label><span><?php fs_esc_html_echo_inline( 'City', 'city', $slug ) ?> / <?php fs_esc_html_echo_inline( 'Town', 'town', $slug ) ?>:</span> <input id="address_city" value="<?php echo esc_attr( $billing->address_city ) ?>" placeholder="<?php fs_esc_attr_echo_inline( 'City', 'city', $slug ) ?> / <?php fs_esc_attr_echo_inline( 'Town', 'town', $slug ) ?>"></label></td>
+				<td><label><span><?php fs_esc_html_echo_inline( 'ZIP / Postal Code', 'zip-postal-code', $slug ) ?>:</span> <input id="address_zip" value="<?php echo esc_attr( $billing->address_zip ) ?>" placeholder="<?php fs_esc_attr_echo_inline( 'ZIP / Postal Code', 'zip-postal-code', $slug ) ?>"></label></td>
 			</tr>
 			<tr>
 				<?php $countries = array(
@@ -311,11 +305,11 @@
 							<?php endif ?>
 							<?php foreach ( $countries as $code => $country ) : ?>
 								<option
-									value="<?php echo $code ?>" <?php selected( $billing->address_country_code, $code ) ?>><?php echo $country ?></option>
+									value="<?php echo esc_attr( $code ) ?>" <?php selected( $billing->address_country_code, $code ) ?>><?php echo esc_html( $country ) ?></option>
 							<?php endforeach ?>
 						</select></label></td>
 				<td><label><span><?php fs_esc_html_echo_inline( 'State', 'state', $slug ) ?> / <?php fs_esc_html_echo_inline( 'Province', 'province', $slug ) ?>:</span>
-						<input id="address_state" value="<?php echo $billing->address_state ?>" placeholder="<?php fs_esc_html_echo_inline( 'State', 'state', $slug ) ?> / <?php fs_esc_html_echo_inline( 'Province', 'province', $slug ) ?>"></label></td>
+						<input id="address_state" value="<?php echo esc_attr( $billing->address_state ) ?>" placeholder="<?php fs_esc_html_echo_inline( 'State', 'state', $slug ) ?> / <?php fs_esc_html_echo_inline( 'Province', 'province', $slug ) ?>"></label></td>
 			</tr>
 			<tr>
 				<td colspan="2">
@@ -383,12 +377,12 @@
 				});
 
 				$.ajax({
-					url    : ajaxurl,
+					url    : <?php echo Freemius::ajax_url() ?>,
 					method : 'POST',
 					data   : {
-						action   : '<?php echo $fs->get_ajax_action( 'update_billing' ) ?>',
-						security : '<?php echo $fs->get_ajax_security( 'update_billing' ) ?>',
-						module_id: '<?php echo $fs->get_id() ?>',
+						action   : <?php echo wp_json_encode( $fs->get_ajax_action( 'update_billing' ) ) ?>,
+						security : <?php echo wp_json_encode( $fs->get_ajax_security( 'update_billing' ) ) ?>,
+						module_id: <?php echo wp_json_encode( $fs->get_id() ) ?>,
 						billing  : billing
 					},
 					success: function (resultObj) {
@@ -427,5 +421,3 @@
 			});
 	})(jQuery);
 </script>
-<?php
-	endif;
