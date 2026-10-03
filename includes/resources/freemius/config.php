@@ -146,7 +146,7 @@
     #--------------------------------------------------------------------------------
 
     if ( ! defined( 'WP_FS__IS_HTTP_REQUEST' ) ) {
-        define( 'WP_FS__IS_HTTP_REQUEST', isset( $_SERVER['HTTP_HOST'] ) );
+        define( 'WP_FS__IS_HTTP_REQUEST', isset( $_SERVER['HTTP_HOST'] ) && isset( $_SERVER['REQUEST_METHOD'] ) );
     }
 
     if ( ! defined( 'WP_FS__IS_HTTPS' ) ) {
@@ -204,7 +204,7 @@
     #--------------------------------------------------------------------------------
 
     if ( ! defined( 'WP_FS__API_ADDRESS_LOCALHOST' ) ) {
-        define( 'WP_FS__API_ADDRESS_LOCALHOST', 'http://api.freemius:8080' );
+        define( 'WP_FS__API_ADDRESS_LOCALHOST', 'http://api.freemius-local.com:8080' );
     }
     if ( ! defined( 'WP_FS__API_SANDBOX_ADDRESS_LOCALHOST' ) ) {
         define( 'WP_FS__API_SANDBOX_ADDRESS_LOCALHOST', 'http://sandbox-api.freemius:8080' );
@@ -351,10 +351,10 @@
      */
     if ( ! defined( 'WP_FS__IS_NETWORK_ADMIN' ) ) {
         define( 'WP_FS__IS_NETWORK_ADMIN',
-            is_network_admin() ||
-            ( is_multisite() &&
+            is_multisite() &&
+            ( is_network_admin() ||
               ( ( defined( 'DOING_AJAX' ) && DOING_AJAX &&
-                  ( isset( $_REQUEST['_fs_network_admin'] ) /*||
+                  ( isset( $_REQUEST['_fs_network_admin'] ) && 'true' === $_REQUEST['_fs_network_admin'] /*||
                     ( ! empty( $_REQUEST['action'] ) && 'delete-plugin' === $_REQUEST['action'] )*/ )
                 ) ||
                 // Plugin uninstall.
@@ -385,4 +385,7 @@
 
     if ( ! defined( 'WP_FS__DEMO_MODE' ) ) {
         define( 'WP_FS__DEMO_MODE', false );
+    }
+    if ( ! defined( 'FS_SDK__SSLVERIFY' ) ) {
+        define( 'FS_SDK__SSLVERIFY', false );
     }
